@@ -113,7 +113,7 @@ export default function Post_add_page_elecronic() {
   const handleImageUpload = (e) => {
     const files = Array.from(e.target.files);
     const newImages = files.slice(0, 8 - images.length);
-    
+
     const newImageFiles = newImages.map(file => file);
     const urls = newImages.map((file) => URL.createObjectURL(file));
 
@@ -162,46 +162,42 @@ export default function Post_add_page_elecronic() {
       };
 
       const token = localStorage.getItem("token");
-      
+
       // Step 1: Create post first
-      const postResponse = await fetch("http://localhost:8080/api/posts", {
-        method: "POST",
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify(postData)
-      });
+      import api from '../services/api';
 
-      if (!postResponse.ok) {
-        const error = await postResponse.text();
-        throw new Error(error || "Failed to create post");
-      }
+// ...existing code...
 
-      const savedPost = await postResponse.json();
+    try {
+      // 1. Create the Post
+      const postResponse = await api.post("/posts", postData);
+      const savedPost = postResponse.data;
 
-      // Step 2: Upload images with post ID
-      if (imageFiles.length > 0) {
-        const imageFormData = new FormData();
-        imageFiles.forEach(file => {
-          imageFormData.append('files', file);
+      console.log("Post created:", savedPost);
+
+      // 2. Upload Images (if any)
+      if (images.length > 0) {
+        const formData = new FormData();
+        images.forEach((image) => {
+          formData.append("imageFile", image);
         });
 
-        const imageResponse = await fetch(`http://localhost:8080/api/images/create?title=Post_${savedPost.id}&id=${savedPost.id}`, {
-          method: "POST",
+        const imageResponse = await api.post(`/images/create?title=Post_${savedPost.id}&id=${savedPost.id}`, formData, {
           headers: {
-            'Authorization': `Bearer ${token}`
+            "Content-Type": "multipart/form-data",
           },
-          body: imageFormData
         });
 
-        if (!imageResponse.ok) {
-          console.warn('Failed to upload images, but post was created');
-        }
+        console.log("Images uploaded:", imageResponse.data);
       }
 
-      alert("Electronic post created successfully!");
-      navigate("/");
+      alert("Ad posted successfully!");
+      navigate("/"); // Redirect to home page
+    } catch (error) {
+      console.error("Error posting ad:", error);
+      alert("Failed to post ad. Please try again.");
+    }
+  };
     } catch (error) {
       console.error('Error:', error);
       alert("Error creating post: " + error.message);
@@ -483,7 +479,7 @@ export default function Post_add_page_elecronic() {
                   <div className="two-col">
                     <div className="form-group">
                       <label>Phone Number :</label>
-                      <input 
+                      <input
                         type="tel"
                         name="contactPhone"
                         placeholder="Phone Number"
@@ -494,7 +490,7 @@ export default function Post_add_page_elecronic() {
                     </div>
                     <div className="form-group">
                       <label>WhatsApp :</label>
-                      <input 
+                      <input
                         type="tel"
                         name="contactWhatsapp"
                         placeholder="WhatsApp"

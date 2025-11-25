@@ -31,59 +31,56 @@ export default function Home_Page() {
   });
 
   // Fetch category statistics
+  import api from '../services/api';
+
+// ...existing code...
+
   useEffect(() => {
-    const fetchCategoryStats = async () => {
+    const fetchCategoryCounts = async () => {
       try {
-        const [vehiclesRes, realEstateRes, electronicsRes, mobilesRes] = await Promise.all([
-          fetch('http://localhost:8080/api/posts/category/VEHICLE'),
-          fetch('http://localhost:8080/api/posts/category/REAL_ESTATE'),
-          fetch('http://localhost:8080/api/posts/category/ELECTRONIC'),
-          fetch('http://localhost:8080/api/posts/category/PHONE')
+        const responses = await Promise.all([
+          api.get('/posts/category/VEHICLE'),
+          api.get('/posts/category/REAL_ESTATE'),
+          api.get('/posts/category/ELECTRONIC'),
+          api.get('/posts/category/PHONE')
         ]);
 
-        const vehicles = vehiclesRes.ok ? await vehiclesRes.json() : [];
-        const realEstate = realEstateRes.ok ? await realEstateRes.json() : [];
-        const electronics = electronicsRes.ok ? await electronicsRes.json() : [];
-        const mobiles = mobilesRes.ok ? await mobilesRes.json() : [];
-
-        setCategoryStats({
-          vehicles: vehicles.length,
-          realEstate: realEstate.length,
-          electronics: electronics.length,
-          mobiles: mobiles.length
+        setCategoryCounts({
+          vehicle: responses[0].data.length,
+          property: responses[1].data.length,
+          electronic: responses[2].data.length,
+          phone: responses[3].data.length
         });
       } catch (error) {
-        console.error('Error fetching category stats:', error);
-      } finally {
-        setLoading(prev => ({ ...prev, stats: false }));
+        console.error('Error fetching category counts:', error);
       }
     };
 
-    fetchCategoryStats();
+    fetchCategoryCounts();
   }, []);
 
   const categories = [
-    { 
-      icon: <FaCar size={40} color="#ff0000ff" />, 
-      name: "VEHICLES", 
+    {
+      icon: <FaCar size={40} color="#ff0000ff" />,
+      name: "VEHICLES",
       ads: `${categoryStats.vehicles.toLocaleString()} ads`,
       href: "/all_category?category=Vehicles"
     },
-    { 
-      icon: <FaHome size={40} color="#0091ffff" />, 
-      name: "REAL ESTATE", 
+    {
+      icon: <FaHome size={40} color="#0091ffff" />,
+      name: "REAL ESTATE",
       ads: `${categoryStats.realEstate.toLocaleString()} ads`,
       href: "/all_category?category=Real Estate"
     },
-    { 
-      icon: <FaMobileAlt size={40} color="#f13787ff" />, 
-      name: "MOBILES", 
+    {
+      icon: <FaMobileAlt size={40} color="#f13787ff" />,
+      name: "MOBILES",
       ads: `${categoryStats.mobiles.toLocaleString()} ads`,
       href: "/all_category?category=Mobils Phone"
     },
-    { 
-      icon: <FaTv size={40} color="#04ff00ff" />, 
-      name: "ELECTRONICS", 
+    {
+      icon: <FaTv size={40} color="#04ff00ff" />,
+      name: "ELECTRONICS",
       ads: `${categoryStats.electronics.toLocaleString()} ads`,
       href: "/all_category?category=Electronics"
     },
@@ -189,7 +186,7 @@ export default function Home_Page() {
         <div key={ad.id || index} className="ad-box-wrapper">
           <a href={`/one_category_page/${ad.id}`}>
             <div className="ad-box">
-              
+
               <div className="imgdiv">
                 <img
                   src={getPostImage(ad.id)}
@@ -232,7 +229,7 @@ export default function Home_Page() {
   return (
     <div>
       <Navibar />
-      
+
       <div className="main_page">
         <div className="banner">
           <h1>LK ADVERTISEMENT</h1>

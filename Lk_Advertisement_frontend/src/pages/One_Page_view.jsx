@@ -28,50 +28,55 @@ export default function One_Page_view() {
     const [popupVisible, setPopupVisible] = useState(false);
     const [popupContent, setPopupContent] = useState("");
 
-    useEffect(() => {
-        const loadPost = async () => {
-            setLoading(true);
-            try {
-                const res = await fetch(`http://localhost:8080/api/posts/${id}`);
-                if (!res.ok) {
-                    console.error("Post fetch failed:", res.status);
-                    setPostData(null);
-                    return;
-                }
-                const data = await res.json();
+    import api from '../services/api';
 
-                // data is FullPostDTO: { post, vehiclePost, realEstatePost, phonePost, electronicPost, images }
-                setPostData(data.post || null);
+// ...existing code...
 
-                setCategoryData({
-                    vehicle: data.vehiclePost || null,
-                    realEstate: data.realEstatePost || null,
-                    phone: data.phonePost || null,
-                    electronic: data.electronicPost || null
-                });
+    const fetchPost = async () => {
+        try {
+            const res = await api.get(`/posts/${id}`);
+            const data = res.data;
+            setPostData(data);
 
-                // Flatten images: data.images is List<ImageFile>, each has .images (list of ImageBlob)
-                const flattened = (data.images || []).flatMap(imageFile => imageFile.images || []);
-                setAllImages(flattened);
-                console.log("Flattened images:", flattened);
+            // Fetch images for the post
+            const imagesRes = await api.get(`/images/post/${id}`);
+            const imagesData = imagesRes.data;
 
-                // Choose main image: prefer first blob id -> /api/images/image/{id} else fallback to /api/images/post/{id}/first
-                if (flattened.length > 0 && flattened[0].id) {
-                    setMainImage(`http://localhost:8080/api/images/image/${flattened[0].id}`);
-                } else {
-                    // fallback
-                    setMainImage(`http://localhost:8080/api/images/post/${id}/first`);
-                }
+            // Flatten the array of arrays if necessary
+            const flattened = imagesData.flat();
+            setImages(flattened);
 
-            } catch (err) {
-                console.error("Error loading post:", err);
-            } finally {
-                setLoading(false);
+            // Set the first image as the main image initially
+            if (flattened.length > 0) {
+                // Construct image URL using the base URL from api config if possible,
+                // but since we need a direct URL for img src, we might need a helper or use the full URL.
+                // For now, let's assume the backend returns IDs and we construct the URL.
+                // BETTER APPROACH: Use the configured API_BASE_URL
+                const baseURL = api.defaults.baseURL.replace('/api', '');
+                setMainImage(`${baseURL}/api/images/image/${flattened[0].id}`);
+            } else {
+                const baseURL = api.defaults.baseURL.replace('/api', '');
+                setMainImage(`${baseURL}/api/images/post/${id}/first`);
             }
-        };
+        } catch (error) {
+            console.error("Error fetching post data:", error);
+        }
+    };
 
-        if (id) loadPost();
+    useEffect(() => {
+        fetchPost();
     }, [id]);
+
+    // Helper to get image URL
+    const getImageUrl = (imageId) => {
+        const baseURL = api.defaults.baseURL.replace('/api', '');
+        return `${baseURL}/api/images/image/${imageId}`;
+    }
+
+    const getFirstImageUrl = (postId) => {
+        const baseURL = api.defaults.baseURL.replace('/api', '');
+        return `${baseURL}/api/images/post/${postId}/first`;
+    }
 
     // fallback: if images exist but you still use previous loadImages method, you can keep it,
     // but above we rely on dto.images.
@@ -254,7 +259,7 @@ export default function One_Page_view() {
                                             {categoryData.realEstate.address &&(<li key="re-type">Address : {categoryData.realEstate.address}</li>)}
                                         </>
                                     )}
-                                    
+
                                     {postData.categoryType === 'PHONE' && categoryData.phone && (
                                         <>
                                             {categoryData.phone.type &&(<li key="re-type">Type : {categoryData.phone.type}</li>)}
