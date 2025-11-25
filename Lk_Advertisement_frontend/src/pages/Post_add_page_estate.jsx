@@ -147,7 +147,6 @@ export default function Post_add_page_estate() {
       setIsSubmitting(false);
     }
   };
-    } catch (err) {
       console.error(err);
       alert("Error creating post: " + err.message);
     } finally {

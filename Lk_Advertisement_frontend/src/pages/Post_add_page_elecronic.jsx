@@ -197,7 +197,6 @@ export default function Post_add_page_elecronic() {
       setIsSubmitting(false);
     }
   };
-      alert("Error creating post: " + error.message);
     } finally {
       setIsSubmitting(false);
     }

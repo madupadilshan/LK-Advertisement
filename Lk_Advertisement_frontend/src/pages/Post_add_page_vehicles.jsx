@@ -211,18 +211,6 @@ export default function Post_add_page_vehicles() {
       setIsSubmitting(false);
     }
   };
-  };
-
-      alert('Post created successfully!');
-      navigate('/');
-
-    } catch (error) {
-      console.error('Error:', error);
-      alert('Error creating post: ' + error.message);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
 
   // Reset form
   const resetForm = () => {

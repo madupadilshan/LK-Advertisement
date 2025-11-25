@@ -41,7 +41,7 @@ export default function One_Page_view() {
 
             // Flatten the array of arrays if necessary
             const flattened = imagesData.flat();
-            setImages(flattened);
+            setAllImages(flattened);
 
             // Set the first image as the main image initially
             if (flattened.length > 0) {

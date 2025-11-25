@@ -145,9 +145,6 @@ export default function Post_add_page_phone() {
       setIsSubmitting(false);
     }
   };
-      setIsSubmitting(false);
-    }
-  };
 
   const resetForm = () => {
     setFormData({
