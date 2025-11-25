@@ -22,7 +22,7 @@ export default function Post_add_page_2() {
     contactEmail: '',
     contactPhone: '',
     contactWhatsapp: '',
-    
+
     // VehiclePost table fields
     make: '',
     model: '',
@@ -115,7 +115,7 @@ export default function Post_add_page_2() {
     const newImages = files.slice(0, 8 - images.length);
     const imageURLs = newImages.map((file) => URL.createObjectURL(file));
     setImages([...images, ...imageURLs]);
-    
+
     // For now, we'll store the first image URL
     if (newImages.length > 0) {
       setFormData(prevState => ({
@@ -134,7 +134,7 @@ export default function Post_add_page_2() {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     try {
       // Prepare the data for API
       const postData = {
@@ -149,7 +149,7 @@ export default function Post_add_page_2() {
         contactEmail: currentUser.email,
         contactPhone: currentUser.phoneNumber,
         contactWhatsapp: currentUser.phoneNumber,
-        
+
         // VehiclePost specific data
         make: formData.make,
         model: formData.model,
@@ -245,8 +245,8 @@ export default function Post_add_page_2() {
                 <div className="form_grid">
                   <div>
                     <label>Condition :</label>
-                    <select 
-                      name="condition" 
+                    <select
+                      name="condition"
                       value={formData.condition}
                       onChange={handleInputChange}
                       required
@@ -259,10 +259,10 @@ export default function Post_add_page_2() {
                     </select>
 
                     <label>Title :</label>
-                    <input 
-                      type="text" 
-                      name="Title" 
-                      placeholder="Title" 
+                    <input
+                      type="text"
+                      name="Title"
+                      placeholder="Title"
                       value={formData.mileage}
                       onChange={handleInputChange}
                     />
@@ -318,17 +318,17 @@ export default function Post_add_page_2() {
                     </select>
 
                     <label>Model Year :</label>
-                    <input 
-                      type="number" 
-                      name="ModelYear" 
-                      placeholder="Model Year" 
+                    <input
+                      type="number"
+                      name="ModelYear"
+                      placeholder="Model Year"
                       value={formData.mileage}
                       onChange={handleInputChange}
                     />
 
                     <label>Fuel Type :</label>
-                    <select 
-                      name="fuelType" 
+                    <select
+                      name="fuelType"
                       value={formData.fuelType}
                       onChange={handleInputChange}
                       required
@@ -342,55 +342,55 @@ export default function Post_add_page_2() {
                   </div>
                   <div>
                     <label>Location :</label>
-                    <input 
-                      type="text" 
-                      name="Location" 
-                      placeholder="Location" 
+                    <input
+                      type="text"
+                      name="Location"
+                      placeholder="Location"
                       value={formData.engineCapacity}
                       onChange={handleInputChange}
                     />
 
                     <label>Mileage (km) :</label>
-                    <input 
-                      type="number" 
-                      name="mileage" 
-                      placeholder="Mileage (km)" 
+                    <input
+                      type="number"
+                      name="mileage"
+                      placeholder="Mileage (km)"
                       value={formData.mileage}
                       onChange={handleInputChange}
                     />
 
                     <label>Engine Capacity :</label>
-                    <input 
-                      type="text" 
-                      name="engineCapacity" 
-                      placeholder="Engine Capacity" 
+                    <input
+                      type="text"
+                      name="engineCapacity"
+                      placeholder="Engine Capacity"
                       value={formData.engineCapacity}
                       onChange={handleInputChange}
                     />
 
                     <label>Trim / Edition :</label>
-                    <input 
-                      type="text" 
-                      name="trim" 
-                      placeholder="Trim / Edition" 
+                    <input
+                      type="text"
+                      name="trim"
+                      placeholder="Trim / Edition"
                       value={formData.trim}
                       onChange={handleInputChange}
                     />
 
                     <label>Transmission :</label>
-                    <input 
-                      type="text" 
-                      name="transmission" 
-                      placeholder="Transmission" 
+                    <input
+                      type="text"
+                      name="transmission"
+                      placeholder="Transmission"
                       value={formData.transmission}
                       onChange={handleInputChange}
                     />
 
                     <label>Price (Rs) :</label>
-                    <input 
-                      type="number" 
-                      name="price" 
-                      placeholder="Price (Rs)" 
+                    <input
+                      type="number"
+                      name="price"
+                      placeholder="Price (Rs)"
                       value={formData.price}
                       onChange={handleInputChange}
                       required
@@ -398,9 +398,9 @@ export default function Post_add_page_2() {
                   </div>
                   <div style={{width: '100%', margin: '0 0 -20px'}}>
                     <label>Description :</label>
-                    <textarea 
-                      name="description" 
-                      placeholder="Description" 
+                    <textarea
+                      name="description"
+                      placeholder="Description"
                       value={formData.description}
                       onChange={handleInputChange}
                       rows="6"
@@ -493,12 +493,12 @@ export default function Post_add_page_2() {
                   <p style={{'color':'#0074BA', 'fontSize':'22px','textTransform': 'capitalize'}}>
                     {currentUser.firstName} {currentUser.lastName}
                   </p>
-                  
+
                   <label>Seller Email :</label>
                   <p style={{'color':'#0074BA', 'fontSize':'22px'}}>
                     {currentUser.email}
                   </p>
-                  
+
                   <label>WhatsApp :</label>
                   <input type="tel" className="whatsapp" id="" placeholder='WhatsApp' />
                   {/* <p style={{'color':'#0074BA', 'fontSize':'22px','textTransform': 'capitalize'}}>
@@ -506,7 +506,7 @@ export default function Post_add_page_2() {
                   </p> */}
                 </div>
               </fieldset>
-              
+
               <div className="but">
                 <button type="button" onClick={handleCancel}>Cancel</button>
                 <button type="submit">Continue</button>
