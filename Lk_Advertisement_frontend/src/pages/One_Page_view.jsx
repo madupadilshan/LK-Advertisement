@@ -12,6 +12,7 @@ import phone from '../image/phone.jpg';
 import vehicle from '../image/vehicle.jpg';
 import estate from '../image/estate.webp';
 import elecronic from '../image/elecronic.jpg';
+import api from '../services/api';
 
 export default function One_Page_view() {
     const { id } = useParams();
@@ -27,10 +28,6 @@ export default function One_Page_view() {
     const [loading, setLoading] = useState(true);
     const [popupVisible, setPopupVisible] = useState(false);
     const [popupContent, setPopupContent] = useState("");
-
-    import api from '../services/api';
-
-// ...existing code...
 
     const fetchPost = async () => {
         try {

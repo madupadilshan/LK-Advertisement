@@ -6,6 +6,7 @@ import { useAuth } from '../context/AuthContext'
 import '../css/post_add_2.css'
 import aboutus from '../image/aboutus.jpg'
 import estate2 from '../image/estate2.jpg'
+import api from '../services/api';
 
 export default function Post_add_page_estate() {
 
@@ -114,9 +115,6 @@ export default function Post_add_page_estate() {
       const token = localStorage.getItem("token");
 
       // Step 1: Create post first
-      import api from '../services/api';
-
-// ...existing code...
 
     try {
       // 1. Create the Post

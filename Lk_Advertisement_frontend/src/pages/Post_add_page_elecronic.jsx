@@ -1,11 +1,12 @@
-import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import Footer from "../componet/Footer";
-import Navibar from "../componet/Navibar";
-import { useAuth } from "../context/AuthContext";
-import "../css/post_add_2.css";
-import aboutus from "../image/aboutus.jpg";
-import electronic2 from "../image/electronic2.jpg";
+import { useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
+import Footer from '../componet/Footer'
+import Navibar from '../componet/Navibar'
+import { useAuth } from '../context/AuthContext'
+import '../css/post_add_2.css'
+import aboutus from '../image/aboutus.jpg'
+import elecronic from '../image/elecronic.jpg'
+import api from '../services/api';
 
 export default function Post_add_page_elecronic() {
   const location = useLocation();
@@ -164,9 +165,6 @@ export default function Post_add_page_elecronic() {
       const token = localStorage.getItem("token");
 
       // Step 1: Create post first
-      import api from '../services/api';
-
-// ...existing code...
 
     try {
       // 1. Create the Post

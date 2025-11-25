@@ -10,6 +10,7 @@ import home3 from '../image/home3.jpg';
 import home4 from '../image/home4.jpg';
 import home5 from '../image/home5.jpg';
 import home6 from '../image/home6.jpg';
+import api from '../services/api';
 
 export default function Home_Page() {
   const [realEstateAds, setRealEstateAds] = useState([]);
@@ -31,9 +32,6 @@ export default function Home_Page() {
   });
 
   // Fetch category statistics
-  import api from '../services/api';
-
-// ...existing code...
 
   useEffect(() => {
     const fetchCategoryCounts = async () => {

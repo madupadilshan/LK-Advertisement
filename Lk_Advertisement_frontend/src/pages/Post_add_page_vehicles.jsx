@@ -5,7 +5,8 @@ import Navibar from '../componet/Navibar'
 import { useAuth } from '../context/AuthContext'
 import '../css/post_add_2.css'
 import aboutus from '../image/aboutus.jpg'
-import vehicle2 from '../image/vehicle2.jpg'
+import vehicle from '../image/vehicle.jpg'
+import api from '../services/api';
 
 export default function Post_add_page_vehicles() {
   const location = useLocation();
@@ -120,11 +121,11 @@ export default function Post_add_page_vehicles() {
   const handleImageUpload = (e) => {
     const files = Array.from(e.target.files);
     const newImages = files.slice(0, 8 - images.length);
-    
+
     // Store both File objects and preview URLs
     const newImageFiles = newImages.map(file => file);
     const imageURLs = newImages.map((file) => URL.createObjectURL(file));
-    
+
     setImages([...images, ...imageURLs]);
     setImageFiles([...imageFiles, ...newImageFiles]);
   };
@@ -140,14 +141,14 @@ export default function Post_add_page_vehicles() {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (imageFiles.length === 0) {
       alert('Please upload at least one image');
       return;
     }
 
     setIsSubmitting(true);
-    
+
     try {
       // Auto-generate title if not provided
       const title = formData.title || `${formData.make} ${formData.model} - ${formData.type}`;
@@ -178,50 +179,41 @@ export default function Post_add_page_vehicles() {
       console.log('Submitting post data:', postData);
 
       const token = localStorage.getItem('token');
-      
-      // Step 1: Create the post first
-      const postResponse = await fetch('http://localhost:8080/api/posts', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify(postData)
-      });
 
-      if (!postResponse.ok) {
-        const error = await postResponse.text();
-        throw new Error(error || 'Failed to create post');
-      }
+    try {
+      // 1. Create the Post
+      const postResponse = await api.post('/posts', postData);
+      const savedPost = postResponse.data;
 
-      const savedPost = await postResponse.json();
-      console.log('Post saved successfully:', savedPost);
+      console.log('Post created:', savedPost);
 
-      // Step 2: Upload images with the post ID
-      if (imageFiles.length > 0) {
-        const imageFormData = new FormData();
-        imageFiles.forEach(file => {
-          imageFormData.append('files', file);
+      // 2. Upload Images (if any)
+      if (images.length > 0) {
+        const formData = new FormData();
+        images.forEach((image) => {
+          formData.append('imageFile', image);
         });
 
-        const imageResponse = await fetch(`http://localhost:8080/api/images/create?title=Post_${savedPost.id}&id=${savedPost.id}`, {
-          method: 'POST',
+        const imageResponse = await api.post(`/images/create?title=Post_${savedPost.id}&id=${savedPost.id}`, formData, {
           headers: {
-            'Authorization': `Bearer ${token}`
+            'Content-Type': 'multipart/form-data',
           },
-          body: imageFormData
         });
 
-        if (!imageResponse.ok) {
-          console.warn('Failed to upload images, but post was created');
-        } else {
-          console.log('Images uploaded successfully');
-        }
+        console.log('Images uploaded:', imageResponse.data);
       }
+
+      alert('Ad posted successfully!');
+      navigate('/'); // Redirect to home page
+    } catch (error) {
+      console.error('Error posting ad:', error);
+      alert('Failed to post ad. Please try again.');
+    }
+  };
 
       alert('Post created successfully!');
       navigate('/');
-      
+
     } catch (error) {
       console.error('Error:', error);
       alert('Error creating post: ' + error.message);
@@ -261,7 +253,7 @@ export default function Post_add_page_vehicles() {
     resetForm();
     navigate('/post_add');
   };
-  
+
   return (
     <div>
       <Navibar />
@@ -285,8 +277,8 @@ export default function Post_add_page_vehicles() {
                 <div className="form_grid">
                   <div>
                     <label>Condition :</label>
-                    <select 
-                      name="condition" 
+                    <select
+                      name="condition"
                       value={formData.condition}
                       onChange={handleInputChange}
                       required
@@ -298,14 +290,14 @@ export default function Post_add_page_vehicles() {
                     </select>
 
                     <label>Title :</label>
-                    <input 
-                      type="text" 
-                      name="title" 
-                      placeholder="Title" 
+                    <input
+                      type="text"
+                      name="title"
+                      placeholder="Title"
                       value={formData.title}
                       onChange={handleInputChange}
                     />
-        
+
                     <label>Vehicle Type :</label>
                     <select
                       name="type"
@@ -320,7 +312,7 @@ export default function Post_add_page_vehicles() {
                         </option>
                       ))}
                     </select>
-        
+
                     <label>Brand :</label>
                     <select
                       name="make"
@@ -337,7 +329,7 @@ export default function Post_add_page_vehicles() {
                           </option>
                         ))}
                     </select>
-        
+
                     <label>Model :</label>
                     <select
                       name="model"
@@ -357,8 +349,8 @@ export default function Post_add_page_vehicles() {
                     </select>
 
                     <label>Fuel Type :</label>
-                    <select 
-                      name="fuelType" 
+                    <select
+                      name="fuelType"
                       value={formData.fuelType}
                       onChange={handleInputChange}
                       required
@@ -372,45 +364,45 @@ export default function Post_add_page_vehicles() {
                   </div>
                   <div>
                     <label>Location :</label>
-                    <input 
-                      type="text" 
-                      name="location" 
-                      placeholder="Location" 
+                    <input
+                      type="text"
+                      name="location"
+                      placeholder="Location"
                       value={formData.location}
                       onChange={handleInputChange}
                       required
                     />
-                    
+
                     <label>Mileage (km) :</label>
-                    <input 
-                      type="number" 
-                      name="mileage" 
-                      placeholder="Mileage (km)" 
+                    <input
+                      type="number"
+                      name="mileage"
+                      placeholder="Mileage (km)"
                       value={formData.mileage}
                       onChange={handleInputChange}
                     />
-        
+
                     <label>Engine Capacity :</label>
-                    <input 
-                      type="number" 
-                      name="engineCapacity" 
-                      placeholder="Engine Capacity" 
+                    <input
+                      type="number"
+                      name="engineCapacity"
+                      placeholder="Engine Capacity"
                       value={formData.engineCapacity}
                       onChange={handleInputChange}
                     />
-        
+
                     <label>Trim / Edition :</label>
-                    <input 
-                      type="text" 
-                      name="trim" 
-                      placeholder="Trim / Edition" 
+                    <input
+                      type="text"
+                      name="trim"
+                      placeholder="Trim / Edition"
                       value={formData.trim}
                       onChange={handleInputChange}
                     />
-        
+
                     <label>Transmission :</label>
-                    <select 
-                      name="transmission" 
+                    <select
+                      name="transmission"
                       value={formData.transmission}
                       onChange={handleInputChange}
                     >
@@ -419,12 +411,12 @@ export default function Post_add_page_vehicles() {
                       <option value="Manual">Manual</option>
                       <option value="Semi-Automatic">Semi-Automatic</option>
                     </select>
-        
+
                     <label>Price (Rs) :</label>
-                    <input 
-                      type="number" 
-                      name="price" 
-                      placeholder="Price (Rs)" 
+                    <input
+                      type="number"
+                      name="price"
+                      placeholder="Price (Rs)"
                       value={formData.price}
                       onChange={handleInputChange}
                       required
@@ -432,9 +424,9 @@ export default function Post_add_page_vehicles() {
                   </div>
                   <div style={{width: '100%', margin: '0 0 -20px'}}>
                     <label>Description :</label>
-                    <textarea 
-                      name="description" 
-                      placeholder="Description" 
+                    <textarea
+                      name="description"
+                      placeholder="Description"
                       value={formData.description}
                       onChange={handleInputChange}
                       rows="6"
@@ -539,7 +531,7 @@ export default function Post_add_page_vehicles() {
                   <div className="two-col">
                     <div className="form-group">
                       <label>Phone Number :</label>
-                      <input 
+                      <input
                         type="tel"
                         name="contactPhone"
                         placeholder="Phone Number"
@@ -550,7 +542,7 @@ export default function Post_add_page_vehicles() {
                     </div>
                     <div className="form-group">
                       <label>WhatsApp :</label>
-                      <input 
+                      <input
                         type="tel"
                         name="contactWhatsapp"
                         placeholder="WhatsApp"
@@ -561,7 +553,7 @@ export default function Post_add_page_vehicles() {
                   </div>
                 </div>
               </fieldset>
-              
+
               <div className="but">
                 <button type="button" onClick={handleCancel} disabled={isSubmitting}>
                   Cancel
