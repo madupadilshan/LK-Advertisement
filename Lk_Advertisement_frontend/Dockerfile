@@ -4,6 +4,12 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
+
+# Accept the build argument
+ARG VITE_API_BASE_URL
+# Set it as an environment variable for the build process
+ENV VITE_API_BASE_URL=$VITE_API_BASE_URL
+
 RUN npm run build
 
 # Production Stage

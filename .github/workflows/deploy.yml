@@ -45,11 +45,11 @@ jobs:
           # Stop existing containers
           docker stop lk_ads_backend lk_ads_frontend || true
           docker rm lk_ads_backend lk_ads_frontend || true
-          
+
           # Pull new images
           docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/lk-ads-backend:latest
           docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/lk-ads-frontend:latest
-          
+
           # Run Backend
           docker run -d \
             --name lk_ads_backend \

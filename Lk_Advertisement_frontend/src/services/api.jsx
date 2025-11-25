@@ -9,7 +9,7 @@ const api = axios.create({
   baseURL: API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
-    
+
   },
 });
 
@@ -73,7 +73,7 @@ export const postsAPI = {
   deletePost: (id) => api.delete(`/posts/${id}`),
   getUserPosts: (userId) => api.get(`/posts/user/${userId}`),
   getPostImages: (postId) => api.get(`/images/post/${postId}`),
-  getFirstImage: (postId) => api.get(`/images/post/${postId}/first`, { 
+  getFirstImage: (postId) => api.get(`/images/post/${postId}/first`, {
     responseType: 'blob'
   }),
 };
