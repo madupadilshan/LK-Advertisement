@@ -197,10 +197,6 @@ export default function Post_add_page_elecronic() {
       setIsSubmitting(false);
     }
   };
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
 
   // Reset form
   const resetForm = () => {

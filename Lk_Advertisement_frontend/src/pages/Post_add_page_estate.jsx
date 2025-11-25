@@ -147,12 +147,6 @@ export default function Post_add_page_estate() {
       setIsSubmitting(false);
     }
   };
-      console.error(err);
-      alert("Error creating post: " + err.message);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
 
   const resetForm = () => {
     setFormData({
