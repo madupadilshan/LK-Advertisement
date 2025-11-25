@@ -114,7 +114,6 @@ export default function Post_add_page_phone() {
 
       // Step 1: Create post first
 
-    try {
       // 1. Create the Post
       const postResponse = await api.post("/posts", postData);
       const savedPost = postResponse.data;
@@ -142,12 +141,10 @@ export default function Post_add_page_phone() {
     } catch (error) {
       console.error("Error posting ad:", error);
       alert("Failed to post ad. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
-    } catch (err) {
-      console.error(err);
-      alert("Error creating post: " + err.message);
-    } finally {
       setIsSubmitting(false);
     }
   };

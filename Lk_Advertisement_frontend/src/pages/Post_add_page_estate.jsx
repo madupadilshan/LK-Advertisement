@@ -116,7 +116,6 @@ export default function Post_add_page_estate() {
 
       // Step 1: Create post first
 
-    try {
       // 1. Create the Post
       const postResponse = await api.post("/posts", postData);
       const savedPost = postResponse.data;
@@ -144,6 +143,8 @@ export default function Post_add_page_estate() {
     } catch (error) {
       console.error("Error posting ad:", error);
       alert("Failed to post ad. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
     } catch (err) {
