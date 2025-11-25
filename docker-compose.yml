@@ -5,7 +5,7 @@ services:
     build: ./Lk_Advertisement_backend
     container_name: lk_ads_backend
     ports:
-      - "8080:8080"
+      - "8081:8080"
     environment:
       - SPRING_DATASOURCE_URL=jdbc:mysql://host.docker.internal:3306/lk_ads_db?useSSL=false&serverTimezone=UTC
       - SPRING_DATASOURCE_USERNAME=root
