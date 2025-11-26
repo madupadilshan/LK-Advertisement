@@ -88,11 +88,8 @@ export default function Home_Page() {
   useEffect(() => {
     const fetchRealEstateAds = async () => {
       try {
-        const response = await fetch('http://localhost:8080/api/posts/category/REAL_ESTATE');
-        if (response.ok) {
-          const data = await response.json();
-          setRealEstateAds(data.slice(0, 5));
-        }
+        const response = await api.get('/posts/category/REAL_ESTATE');
+        setRealEstateAds(response.data.slice(0, 5));
       } catch (error) {
         console.error('Error fetching real estate ads:', error);
       } finally {
@@ -107,11 +104,8 @@ export default function Home_Page() {
   useEffect(() => {
     const fetchVehicleAds = async () => {
       try {
-        const response = await fetch('http://localhost:8080/api/posts/category/VEHICLE/filter?condition=Brand New');
-        if (response.ok) {
-          const data = await response.json();
-          setVehicleAds(data.slice(0, 5));
-        }
+        const response = await api.get('/posts/category/VEHICLE/filter?condition=Brand New');
+        setVehicleAds(response.data.slice(0, 5));
       } catch (error) {
         console.error('Error fetching vehicle ads:', error);
       } finally {
@@ -126,11 +120,8 @@ export default function Home_Page() {
   useEffect(() => {
     const fetchPhoneAds = async () => {
       try {
-        const response = await fetch('http://localhost:8080/api/posts/category/PHONE');
-        if (response.ok) {
-          const data = await response.json();
-          setPhoneAds(data.slice(0, 5));
-        }
+        const response = await api.get('/posts/category/PHONE');
+        setPhoneAds(response.data.slice(0, 5));
       } catch (error) {
         console.error('Error fetching phone ads:', error);
       } finally {
@@ -145,11 +136,8 @@ export default function Home_Page() {
   useEffect(() => {
     const fetchElectronicAds = async () => {
       try {
-        const response = await fetch('http://localhost:8080/api/posts/category/ELECTRONIC');
-        if (response.ok) {
-          const data = await response.json();
-          setElectronicAds(data.slice(0, 5));
-        }
+        const response = await api.get('/posts/category/ELECTRONIC');
+        setElectronicAds(response.data.slice(0, 5));
       } catch (error) {
         console.error('Error fetching electronic ads:', error);
       } finally {
@@ -162,7 +150,8 @@ export default function Home_Page() {
 
   // ⭐ BACKEND FIRST-IMAGE LOADER
   const getPostImage = (postId) => {
-    return `http://localhost:8080/api/images/post/${postId}/first` || {aboutus};
+    const baseURL = api.defaults.baseURL.replace('/api', '');
+    return `${baseURL}/api/images/post/${postId}/first` || {aboutus};
   };
 
   // ⭐ UPDATED renderAdBoxes()
