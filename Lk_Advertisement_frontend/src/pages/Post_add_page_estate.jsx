@@ -91,13 +91,20 @@ export default function Post_add_page_estate() {
 
     setIsSubmitting(true);
 
+    const price = parseFloat(formData.price);
+    if (isNaN(price)) {
+      alert("Please enter a valid price");
+      setIsSubmitting(false);
+      return;
+    }
+
     try {
       const title = formData.title || `${formData.estateType} for sale in ${formData.location}`;
 
       const postData = {
         title: title,
         description: formData.description,
-        price: parseFloat(formData.price),
+        price: price,
         condition: formData.condition,
         categoryType: "REAL_ESTATE",
         subCategory: formData.subCategory,
@@ -143,7 +150,8 @@ export default function Post_add_page_estate() {
       navigate("/"); // Redirect to home page
     } catch (error) {
       console.error("Error posting ad:", error);
-      alert("Failed to post ad. Please try again.");
+      const errorMessage = error.response?.data || error.message || 'Failed to post ad. Please try again.';
+      alert(`Failed to post ad: ${errorMessage}`);
     } finally {
       setIsSubmitting(false);
     }
