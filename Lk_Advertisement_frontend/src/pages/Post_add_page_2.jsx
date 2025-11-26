@@ -168,13 +168,8 @@ export default function Post_add_page_2() {
       const savedPost = response.data;
       console.log('Post saved successfully:', savedPost);
       alert('Post created successfully!');
-        // Reset form or redirect
-        // resetForm();
-      } else {
-        const error = await response.text();
-        console.error('Error saving post:', error);
-        alert('Error creating post. Please try again.');
-      }
+      // Reset form or redirect
+      // resetForm();
     } catch (error) {
       console.error('Error:', error);
       alert('Network error. Please try again.');

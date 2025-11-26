@@ -178,8 +178,8 @@ export default function Account_page() {
                             <h3 className="lead">Main Details</h3>
                             <ul>
                                 {Object.keys(listData).map((item, index) => (
-                                    <li 
-                                        key={index} 
+                                    <li
+                                        key={index}
                                         onClick={() => handleItemClick(item)}
                                         className={selectedItem === item ? 'active' : ''}
                                         readOnly

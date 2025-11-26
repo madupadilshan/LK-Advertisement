@@ -25,7 +25,7 @@ export default function All_category_view() {
     const categoryMapping = {
         "All": "ALL",
         "Vehicles": "VEHICLE",
-        "Real Estate": "REAL_ESTATE", 
+        "Real Estate": "REAL_ESTATE",
         "Mobils Phone": "PHONE",
         "Electronics": "ELECTRONIC"
     };
@@ -46,19 +46,19 @@ export default function All_category_view() {
             const response = await postsAPI.getFirstImage(postId);
             if (response.status === 200) {
                 const imageUrl = URL.createObjectURL(response.data);
-                
+
                 // Update cache
                 setImageCache(prev => ({
                     ...prev,
                     [postId]: imageUrl
                 }));
-                
+
                 return imageUrl;
             }
         } catch (error) {
             console.error(`Error fetching image for post ${postId}:`, error);
         }
-        
+
         return aboutus; // Return default image if fetch fails
     };
 
@@ -121,19 +121,19 @@ export default function All_category_view() {
 
             const response = await api.get(endpoint);
             const data = response.data;
-            
+
             const ordered = data.slice().reverse();
             setPosts(ordered);
-            
+
             // Set posts first, then load images
             setPosts(ordered);
             console.log("date :", data)
-            
+
             // Pre-load images for all posts
             ordered.forEach(async (post) => {
                 await getPostImage(post);
             });
-            
+
         } catch (err) {
             setError(err.message);
         } finally {
@@ -252,11 +252,11 @@ export default function All_category_view() {
                                     <a key={post.id} href={`/one_category_page/${post.id}`}>
                                         <div className="add_card">
                                             <div className="img_card">
-                                                <img 
-                                                    src={imageCache[post.id] || aboutus} 
-                                                    alt={post.title} 
-                                                    onError={(e) => { 
-                                                        e.target.src = aboutus; 
+                                                <img
+                                                    src={imageCache[post.id] || aboutus}
+                                                    alt={post.title}
+                                                    onError={(e) => {
+                                                        e.target.src = aboutus;
                                                     }}
                                                     onLoad={() => {
                                                         // Image loaded successfully
