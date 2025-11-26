@@ -6,7 +6,7 @@ import Navibar from '../componet/Navibar';
 import '../css/all_category_view.css';
 import aboutus from '../image/aboutus.jpg';
 import thanu from '../image/thanu.png';
-import { postsAPI } from '../services/api';
+import api, { postsAPI } from '../services/api';
 import ads from '../image/ads.jpg';
 
 export default function All_category_view() {
