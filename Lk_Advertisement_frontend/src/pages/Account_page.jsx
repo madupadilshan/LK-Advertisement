@@ -4,6 +4,7 @@ import Footer from '../componet/Footer';
 import Navibar from '../componet/Navibar';
 import { useAuth } from '../context/AuthContext';
 import '../css/account.css';
+import api from '../services/api';
 
 export default function Account_page() {
     const [selectedItem, setSelectedItem] = useState('My Ads');
@@ -23,17 +24,9 @@ export default function Account_page() {
 
     const fetchUserPosts = async () => {
         try {
-            const token = localStorage.getItem('token');
-            const response = await fetch(`http://localhost:8080/api/posts/user/${currentUser.id}`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-            if (response.ok) {
-                const data = await response.json();
-                setUserPosts(data);
-                console.log('error :', data)
-            }
+            const response = await api.get(`/posts/user/${currentUser.id}`);
+            setUserPosts(response.data);
+            console.log('User posts:', response.data);
         } catch (error) {
             console.error('Error fetching user posts:', error);
         }
@@ -41,16 +34,8 @@ export default function Account_page() {
 
     const fetchFavorites = async () => {
         try {
-            const token = localStorage.getItem('token');
-            const response = await fetch(`http://localhost:8080/api/favorites/user/${currentUser.id}`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-            if (response.ok) {
-                const data = await response.json();
-                setFavorites(data);
-            }
+            const response = await api.get(`/favorites/user/${currentUser.id}`);
+            setFavorites(response.data);
         } catch (error) {
             console.error('Error fetching favorites:', error);
         }

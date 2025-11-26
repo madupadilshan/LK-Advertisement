@@ -185,10 +185,10 @@ export default function One_Page_view() {
                                         allImages.map(img => (
                                             <div key={img.id || img.fileName || Math.random()} className="thumb">
                                                 <img
-                                                    src={img.id ? `http://localhost:8080/api/images/image/${img.id}` : aboutus}
-                                                    alt="thumb"
+                                                    src={img.id ? getImageUrl(img.id) : aboutus}
+                                                    alt="ad-image"
                                                     onClick={() => {
-                                                        if (img.id) setMainImage(`http://localhost:8080/api/images/image/${img.id}`);
+                                                        if (img.id) setMainImage(getImageUrl(img.id));
                                                     }}
                                                     onError={(e) => (e.target.src = aboutus)}
                                                 />
@@ -197,7 +197,7 @@ export default function One_Page_view() {
                                     ) : (
                                         // If no flattened blobs, still show first-by-post fallback thumb
                                         <div className="thumb">
-                                            <img src={`http://localhost:8080/api/images/post/${postData.id}/first`} alt="thumb" onError={(e) => (e.target.src = aboutus)} />
+                                            <img src={getFirstImageUrl(postData.id)} alt="thumb" onError={(e) => (e.target.src = aboutus)} />
                                         </div>
                                     )}
                                 </div>

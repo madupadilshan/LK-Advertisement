@@ -108,20 +108,19 @@ export default function All_category_view() {
     const fetchPosts = async () => {
         try {
             setLoading(true);
-            let url = 'http://localhost:8080/api/posts';
+            let endpoint = '/posts';
 
             if (keyword) {
-                url = `http://localhost:8080/api/posts/search?keyword=${encodeURIComponent(keyword)}`;
+                endpoint = `/posts/search?keyword=${encodeURIComponent(keyword)}`;
             } else if (selectedCategory !== "All") {
                 const backendCategory = categoryMapping[selectedCategory];
-                url = selectedType !== "All"
-                    ? `http://localhost:8080/api/posts/category/${backendCategory}/filter?condition=${selectedType}`
-                    : `http://localhost:8080/api/posts/category/${backendCategory}`;
+                endpoint = selectedType !== "All"
+                    ? `/posts/category/${backendCategory}/filter?condition=${selectedType}`
+                    : `/posts/category/${backendCategory}`;
             }
 
-            const response = await fetch(url);
-            if (!response.ok) throw new Error('Failed to fetch posts');
-            const data = await response.json();
+            const response = await api.get(endpoint);
+            const data = response.data;
             
             const ordered = data.slice().reverse();
             setPosts(ordered);

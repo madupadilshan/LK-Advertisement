@@ -4,6 +4,7 @@ import Navibar from '../componet/Navibar'
 import { useAuth } from '../context/AuthContext'
 import '../css/post_add_2.css'
 import aboutus from '../image/aboutus.jpg'
+import api from '../services/api'
 
 
 export default function Post_add_page_2() {
@@ -163,19 +164,10 @@ export default function Post_add_page_2() {
       };
 
       // API call to save the post
-      const response = await fetch('http://localhost:8080/api/posts', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}` // Assuming you store JWT token
-        },
-        body: JSON.stringify(postData)
-      });
-
-      if (response.ok) {
-        const savedPost = await response.json();
-        console.log('Post saved successfully:', savedPost);
-        alert('Post created successfully!');
+      const response = await api.post('/posts', postData);
+      const savedPost = response.data;
+      console.log('Post saved successfully:', savedPost);
+      alert('Post created successfully!');
         // Reset form or redirect
         // resetForm();
       } else {
