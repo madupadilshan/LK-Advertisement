@@ -200,7 +200,17 @@ export default function Post_add_page_elecronic() {
       navigate("/"); // Redirect to home page
     } catch (error) {
       console.error("Error posting ad:", error);
-      const errorMessage = error.response?.data || error.message || 'Failed to post ad. Please try again.';
+      let errorMessage = 'Failed to post ad. Please try again.';
+      if (error.response && error.response.data) {
+        const data = error.response.data;
+        if (typeof data === 'string') {
+          errorMessage = data;
+        } else if (typeof data === 'object') {
+           errorMessage = data.message || data.error || JSON.stringify(data);
+        }
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
       alert(`Failed to post ad: ${errorMessage}`);
     } finally {
       setIsSubmitting(false);
