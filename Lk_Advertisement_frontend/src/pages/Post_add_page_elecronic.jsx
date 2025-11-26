@@ -181,10 +181,10 @@ export default function Post_add_page_elecronic() {
       console.log("Post created:", savedPost);
 
       // 2. Upload Images (if any)
-      if (images.length > 0) {
+      if (imageFiles.length > 0) {
         const formData = new FormData();
-        images.forEach((image) => {
-          formData.append("imageFile", image);
+        imageFiles.forEach((file) => {
+          formData.append('files', file);
         });
 
         const imageResponse = await api.post(`/images/create?title=Post_${savedPost.id}&id=${savedPost.id}`, formData, {
