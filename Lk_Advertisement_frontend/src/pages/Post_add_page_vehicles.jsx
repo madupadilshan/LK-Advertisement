@@ -6,7 +6,7 @@ import { useAuth } from '../context/AuthContext'
 import '../css/post_add_1.css'
 import '../css/post_add_2.css'
 import aboutus from '../image/aboutus.jpg'
-import vehicle from '../image/vehicle.jpg'
+import vehicle2 from '../image/vehicle2.jpg'
 import api from '../services/api';
 
 export default function Post_add_page_vehicles() {

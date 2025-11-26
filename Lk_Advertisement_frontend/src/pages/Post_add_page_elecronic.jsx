@@ -6,7 +6,7 @@ import { useAuth } from '../context/AuthContext'
 import '../css/post_add_1.css'
 import '../css/post_add_2.css'
 import aboutus from '../image/aboutus.jpg'
-import elecronic from '../image/elecronic.jpg'
+import electronic2 from '../image/electronic2.jpg'
 import api from '../services/api';
 
 export default function Post_add_page_elecronic() {
